@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GuestView 360 — Demo</title>
+  <meta name="description" content="GuestView 360 — sample landing page" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            hero: '#072a4a',
+            mint: '#e9fbf0',
+            tile1: '#e8fbf1',
+            tile2: '#f1fbf6',
+            tile3: '#f6eefb',
+            tile4: '#fbf2f8'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#0b132b]">
+  <header class="frame w-full max-w-[1260px] rounded-3xl shadow-2xl overflow-hidden mx-auto">
+    <div class="frame-inner p-1 bg-gradient-to-b from-white/90 to-white/100">
+      <div class="frame-content bg-white rounded-2xl overflow-hidden">
+        <header class="site-header">
+          <div class="container header-inner relative">
+            <a class="brand absolute left-1/2 -translate-x-1/2 top-12 md:top-8 text-3xl font-semibold z-40" href="#">
+              <span class="text-hero">GuestView&nbsp;</span><span class="text-hero">360</span>
+            </a>
+            <nav class="site-nav">
+              <a class="text-hero hover:underline px-2" href="#about">About Us</a>
+              <a class="text-hero hover:underline px-2" href="#services">Services/FAQ</a>
+              <a class="text-hero hover:underline px-2" href="#payment">Payment Portal</a>
+              <a class="text-hero hover:underline px-2" href="#portfolio">Portfolio</a>
+              <a class="px-3 py-1 border border-hero rounded-md text-hero" href="#contact">Contact Us</a>
+            </nav>
+          </div>
+        </header>
+
+  <main class="mt-6 md:mt-12">
+          <section class="hero relative h-[600px]">
+            <div class="hero-bg absolute inset-0 bg-cover bg-center filter saturate-95" role="img" aria-label="Hero background">
+              <div class="hero-overlay absolute inset-0" style="background: linear-gradient(180deg, rgba(6,38,66,0.85) 0%, rgba(6,38,66,0.6) 40%, rgba(6,38,66,0.4) 70%);"></div>
+            </div>
+
+            <div class="container hero-inner relative mx-auto max-w-[1252px]">
+              <!-- Brand overlay removed per request -->
+        <!-- media-stack data-images: comma separated image paths (defaults to pageFormat.jpg)
+          Optional data-captions: comma separated captions matching images -->
+            </div>
+            <!-- Full-bleed hero image filling the section -->
+            <img src="pageFormat.jpg" alt="Hero" class="hero-fill absolute inset-0 w-full h-full object-cover" />
+          </section>
+
+          <section class="tiles bg-white py-4">
+            <div class="tiles-row grid grid-cols-4 max-w-[1100px] mx-auto">
+              <div class="tile bg-tile1 p-9 text-center font-semibold text-gray-900 border-r">About Us</div>
+              <div class="tile bg-tile2 p-9 text-center font-semibold text-gray-900 border-r">Services Offered</div>
+              <a href="#" class="tile bg-tile3 p-9 text-center font-semibold text-hero border-r payment-link" data-stripe-url="" title="Open payment portal">Payment Portal</a>
+              <button type="button" class="tile bg-tile4 p-9 text-center font-semibold text-gray-900 portfolio-link" data-images="portfolio1.jpg,portfolio2.jpg,portfolio3.jpg" aria-label="Open portfolio gallery">Portfolio</button>
+            </div>
+          </section>
+        </main>
+
+        <footer class="site-footer">
+          <div class="container">
+            <small>&copy; <span id="year"></span> GuestView 360 — Demo</small>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </header>
+    <!-- Lightbox modal (hidden by default) -->
+    <div class="lightbox fixed inset-0 hidden items-center justify-center z-[1100]" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="lightbox-backdrop absolute inset-0 bg-black/70" data-action="close"></div>
+      <div class="lightbox-panel relative z-10 flex items-center gap-4 p-5 max-w-[92vw] max-h-[92vh]">
+  <button class="lightbox-close absolute right-2 top-2 text-hero text-3xl" aria-label="Close">&times;</button>
+  <button class="lightbox-prev text-hero text-4xl px-3" aria-label="Previous">&#10094;</button>
+        <div class="lightbox-content flex-1 flex items-center justify-center max-h-[43vh]">
+          <img src="" alt="" class="lightbox-img max-w-full max-h-[43vh] object-contain rounded-lg shadow-2xl" />
+          <div class="lightbox-caption text-hero mt-2 text-center" aria-hidden="true"></div>
+        </div>
+        <div class="lightbox-thumbs flex gap-2 items-center pt-3 overflow-x-auto max-w-[86vw]" aria-label="Thumbnails" role="list"></div>
+  <button class="lightbox-next text-hero text-4xl px-3" aria-label="Next">&#10095;</button>
+      </div>
+    </div>
+
+    <!-- Contact / About modal (opens when About Us tile is clicked) -->
+    <div class="about-modal fixed inset-0 hidden items-center justify-center z-[1200]" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="about-modal-title">
+      <div class="about-backdrop absolute inset-0 bg-black/60"></div>
+      <div class="about-panel relative z-10 bg-white rounded-lg shadow-2xl max-w-lg w-[92%] mx-auto p-6">
+        <button class="about-close absolute right-3 top-3 text-gray-600 text-2xl" aria-label="Close">&times;</button>
+        <h2 id="about-modal-title" class="text-2xl font-semibold text-[#072a4a] mb-3">How GuestView 360 can help</h2>
+        <p class="text-sm text-gray-700 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. We help you showcase guest experiences with immersive 360-degree views, simplified booking integrations, and a smooth mobile-first presentation to boost conversions and guest satisfaction.</p>
+
+        <div class="mt-4">
+          <div class="flex justify-end">
+            <button type="button" class="about-ok px-4 py-2 rounded-md bg-[#072a4a] text-white">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Contact verification modal (opens when header Contact Us clicked) -->
+    <div class="contact-modal fixed inset-0 hidden items-center justify-center z-[1250]" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+      <div class="contact-backdrop absolute inset-0 bg-black/60"></div>
+      <div class="contact-panel relative z-10 bg-white rounded-lg shadow-2xl max-w-md w-[92%] mx-auto p-6">
+        <button class="contact-close absolute right-3 top-3 text-gray-600 text-2xl" aria-label="Close">&times;</button>
+        <h3 id="contact-modal-title" class="text-xl font-semibold text-[#072a4a] mb-2">Quick human check</h3>
+        <p class="text-sm text-gray-700 mb-4">Before contacting us, please complete this quick verification to confirm you're human.</p>
+
+        <form class="contact-form space-y-3" novalidate>
+          <div>
+            <label class="block text-sm text-gray-700">Your name</label>
+            <input name="name" type="text" required class="mt-1 block w-full border rounded-md p-2" placeholder="Jane Doe" />
+          </div>
+          <div>
+            <label class="block text-sm text-gray-700">Phone number</label>
+            <input name="phone" type="tel" required class="mt-1 block w-full border rounded-md p-2" placeholder="(555) 555-5555" />
+          </div>
+          <div>
+            <label class="block text-sm text-gray-700">Your email</label>
+            <input name="email" type="email" required class="mt-1 block w-full border rounded-md p-2" placeholder="you@example.com" />
+          </div>
+          <div>
+            <label class="block text-sm text-gray-700">Prove you're human</label>
+            <div class="mt-2 flex items-center gap-3">
+              <div class="contact-captcha-question text-lg font-medium text-[#072a4a]"></div>
+              <input name="captcha" type="text" required class="contact-captcha-input mt-0 block w-24 border rounded-md p-2" placeholder="Answer" />
+            </div>
+            <p class="contact-captcha-hint text-xs text-gray-500 mt-1">Answer the simple math question above.</p>
+          </div>
+
+          <div class="flex items-center justify-end gap-3">
+            <button type="button" class="contact-cancel px-3 py-2 rounded-md border text-gray-700">Cancel</button>
+            <button type="submit" class="contact-submit px-4 py-2 rounded-md bg-[#072a4a] text-white">Verify & Continue</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Services modal (opens when Services Offered tile is clicked) -->
+    <div class="services-modal fixed inset-0 hidden items-center justify-center z-[1220]" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="services-modal-title">
+      <div class="services-backdrop absolute inset-0 bg-black/60"></div>
+      <div class="services-panel relative z-10 bg-white rounded-lg shadow-2xl max-w-lg w-[92%] mx-auto p-6">
+        <button class="services-close absolute right-3 top-3 text-gray-600 text-2xl" aria-label="Close">&times;</button>
+        <h3 id="services-modal-title" class="text-2xl font-semibold text-[#072a4a] mb-3">Services Offered</h3>
+        <p class="text-sm text-gray-700 mb-3">We offer a range of services to help you showcase properties and convert guests:</p>
+        <ul class="list-disc pl-5 text-gray-700 space-y-2 mb-4">
+          <li><strong>360° Virtual Tours</strong> — immersive panoramic tours for listings and venues.</li>
+          <li><strong>Booking Integration</strong> — connect your property to booking engines and checkout flows.</li>
+          <li><strong>Virtual Staging & Editing</strong> — styling and image enhancements to boost presentation.</li>
+          <li><strong>Analytics & Reporting</strong> — visitor insights and performance tracking.</li>
+          <li><strong>Mobile-first Delivery</strong> — fast, responsive experiences for phones and tablets.</li>
+        </ul>
+        <div class="flex justify-end">
+          <button type="button" class="services-ok px-4 py-2 rounded-md bg-[#072a4a] text-white">Close</button>
+        </div>
+      </div>
+    </div>
+
+  <script>
+    // small script to set year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Carousel implementation + Lightbox: reads data-images from .media-stack
+    (function(){
+      const stack = document.querySelector('.media-stack');
+      if(!stack) return;
+      const images = (stack.dataset.images || 'pageFormat.jpg').split(',').map(s=>s.trim()).filter(Boolean);
+      let idx = 0;
+
+      const center = stack.querySelector('.carousel-center');
+      const leftThumbImg = stack.querySelector('.left-thumb img');
+      const rightThumbImg = stack.querySelector('.right-thumb img');
+  const prevBtn = stack.querySelector('.carousel-btn.prev');
+  const nextBtn = stack.querySelector('.carousel-btn.next');
+
+      // optional per-image captions
+      const captions = (stack.dataset.captions || '').split(',').map(s=>s.trim()).filter(Boolean);
+      const centerCaptionEl = stack.querySelector('.center-caption');
+
+      function render(){
+        if(images.length===0) return;
+        center.src = images[idx];
+        const prevIdx = (idx - 1 + images.length) % images.length;
+        const nextIdx = (idx + 1) % images.length;
+        if(leftThumbImg) leftThumbImg.src = images[prevIdx];
+        if(rightThumbImg) rightThumbImg.src = images[nextIdx];
+        if(centerCaptionEl) centerCaptionEl.textContent = captions[idx] || '';
+      }
+
+      function prev(){ idx = (idx - 1 + images.length) % images.length; render(); }
+      function next(){ idx = (idx + 1) % images.length; render(); }
+
+      // Lightbox elements and functions
+  const lightbox = document.querySelector('.lightbox');
+      const lbBackdrop = lightbox && lightbox.querySelector('.lightbox-backdrop');
+      const lbPanel = lightbox && lightbox.querySelector('.lightbox-panel');
+      const lbImg = lightbox && lightbox.querySelector('.lightbox-img');
+      const lbClose = lightbox && lightbox.querySelector('.lightbox-close');
+      const lbPrev = lightbox && lightbox.querySelector('.lightbox-prev');
+      const lbNext = lightbox && lightbox.querySelector('.lightbox-next');
+    const lbThumbs = lightbox && lightbox.querySelector('.lightbox-thumbs');
+  const lbCaption = lightbox && lightbox.querySelector('.lightbox-caption');
+    let previouslyFocused = null;
+
+      function openLightbox(startIndex){
+        if(!lightbox) return;
+        idx = (typeof startIndex === 'number') ? startIndex : idx;
+        updateLightbox();
+        previouslyFocused = document.activeElement;
+        lightbox.setAttribute('aria-hidden','false');
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+        lbClose && lbClose.focus();
+      }
+
+      function closeLightbox(){
+        if(!lightbox) return;
+        lightbox.setAttribute('aria-hidden','true');
+        lightbox.classList.remove('flex');
+        lightbox.classList.add('hidden');
+        document.body.style.overflow = '';
+        if(previouslyFocused && previouslyFocused.focus) previouslyFocused.focus();
+      }
+
+      function updateLightbox(){
+        if(!lbImg) return;
+        lbImg.src = images[idx];
+        lbImg.loading = 'lazy';
+        lbImg.alt = 'Project image ' + (idx + 1) + ' of ' + images.length;
+        // update caption inside lightbox
+        if(lbCaption) lbCaption.textContent = captions[idx] || '';
+        // update active thumbnail: toggle Tailwind ring classes
+        if(lbThumbs){
+          Array.from(lbThumbs.children).forEach((el,i)=>{
+            if(i === idx){
+              el.classList.add('ring-2','ring-offset-2','ring-indigo-300');
+            } else {
+              el.classList.remove('ring-2','ring-offset-2','ring-indigo-300');
+            }
+          });
+          // ensure active thumb is visible
+          const active = lbThumbs.children[idx];
+          if(active && active.scrollIntoView){ active.scrollIntoView({behavior:'smooth', inline:'center'}); }
+        }
+      }
+
+      // click handlers
+      prevBtn && prevBtn.addEventListener('click', prev);
+      nextBtn && nextBtn.addEventListener('click', next);
+      leftThumbImg && leftThumbImg.addEventListener('click', ()=>{ prev(); openLightbox(idx); });
+      rightThumbImg && rightThumbImg.addEventListener('click', ()=>{ next(); openLightbox(idx); });
+  center && center.addEventListener('click', ()=>openLightbox(idx));
+
+      // lightbox controls
+      lbClose && lbClose.addEventListener('click', closeLightbox);
+      lbBackdrop && lbBackdrop.addEventListener('click', closeLightbox);
+      lbPrev && lbPrev.addEventListener('click', ()=>{ prev(); updateLightbox(); });
+      lbNext && lbNext.addEventListener('click', ()=>{ next(); updateLightbox(); });
+
+      // populate thumbnails in lightbox
+      function populateThumbnails(){
+        if(!lbThumbs) return;
+        lbThumbs.innerHTML = '';
+        images.forEach((src,i)=>{
+          const btn = document.createElement('button');
+            btn.type = 'button';
+            // shrunk thumbnails ~50%
+            btn.className = 'lightbox-thumb flex-none w-8 h-5 rounded-md overflow-hidden border-2 border-transparent';
+          btn.setAttribute('aria-label','Show image '+ (i+1));
+          const img = document.createElement('img');
+          img.src = src;
+          img.className = 'w-full h-full object-cover';
+          img.alt = captions[i] ? captions[i] : 'Thumbnail ' + (i+1);
+          img.loading = 'lazy';
+          btn.appendChild(img);
+          btn.addEventListener('click', ()=>{ idx = i; updateLightbox(); });
+          lbThumbs.appendChild(btn);
+        });
+      }
+
+      populateThumbnails();
+
+      // keyboard support
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'ArrowLeft'){
+          if(lightbox && lightbox.getAttribute('aria-hidden') === 'false') { prev(); updateLightbox(); }
+          else prev();
+        }
+        if(e.key === 'ArrowRight'){
+          if(lightbox && lightbox.getAttribute('aria-hidden') === 'false') { next(); updateLightbox(); }
+          else next();
+        }
+        if(e.key === 'Escape'){
+          if(lightbox && lightbox.getAttribute('aria-hidden') === 'false') closeLightbox();
+        }
+      });
+
+      // simple focus trap inside lightbox
+      document.addEventListener('focus', function(e){
+        if(!lightbox) return;
+        if(lightbox.getAttribute('aria-hidden') === 'false' && !lightbox.contains(e.target)){
+          e.stopPropagation();
+          lbClose.focus();
+        }
+      }, true);
+
+      // autoplay (gentle)
+      let autoplay = setInterval(next, 4500);
+      [prevBtn, nextBtn, center, leftThumbImg, rightThumbImg].forEach(el=>{ if(!el) return; el.addEventListener('mouseenter', ()=>clearInterval(autoplay)); el.addEventListener('mouseleave', ()=>autoplay = setInterval(next,4500)); });
+
+      render();
+    })();
+
+    // Portfolio gallery: open lightbox with a list of images when Portfolio tile is clicked
+    (function(){
+      const lb = document.querySelector('.lightbox');
+      if(!lb) return;
+      const lbImg = lb.querySelector('.lightbox-img');
+      const lbThumbs = lb.querySelector('.lightbox-thumbs');
+      const lbClose = lb.querySelector('.lightbox-close');
+      const lbPrev = lb.querySelector('.lightbox-prev');
+      const lbNext = lb.querySelector('.lightbox-next');
+      const lbBackdrop = lb.querySelector('.lightbox-backdrop');
+      const lbCaption = lb.querySelector('.lightbox-caption');
+
+      let images = [];
+      let idx = 0;
+
+      function openGallery(imgs, start=0){
+        images = imgs && imgs.length ? imgs : ['pageFormat.jpg'];
+        idx = Math.max(0, Math.min(start, images.length-1));
+        populateThumbs();
+        update();
+        lb.setAttribute('aria-hidden','false');
+        lb.classList.remove('hidden'); lb.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+        lbClose && lbClose.focus();
+      }
+
+      function closeGallery(){
+        lb.setAttribute('aria-hidden','true');
+        lb.classList.remove('flex'); lb.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      function update(){
+        if(!lbImg) return;
+        lbImg.src = images[idx];
+        lbImg.loading = 'lazy';
+        lbImg.alt = 'Portfolio image ' + (idx+1);
+        if(lbCaption) lbCaption.textContent = '';
+        // highlight thumb
+        Array.from(lbThumbs.children).forEach((el,i)=>{
+          el.classList.toggle('ring-2', i === idx);
+        });
+      }
+
+      function prev(){ idx = (idx - 1 + images.length) % images.length; update(); }
+      function next(){ idx = (idx + 1) % images.length; update(); }
+
+      function populateThumbs(){
+        if(!lbThumbs) return;
+        lbThumbs.innerHTML = '';
+        images.forEach((src,i)=>{
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          // reduce portfolio thumbnails by ~50%
+          btn.className = 'flex-none w-8 h-5 rounded-md overflow-hidden border-2 border-transparent mr-2';
+          const im = document.createElement('img');
+          im.src = src; im.alt = 'Thumb '+(i+1); im.loading = 'lazy'; im.className='w-full h-full object-cover';
+          btn.appendChild(im);
+          btn.addEventListener('click', ()=>{ idx = i; update(); });
+          lbThumbs.appendChild(btn);
+        });
+      }
+
+      // wire controls
+      lbPrev && lbPrev.addEventListener('click', ()=>{ prev(); });
+      lbNext && lbNext.addEventListener('click', ()=>{ next(); });
+      lbClose && lbClose.addEventListener('click', closeGallery);
+      lbBackdrop && lbBackdrop.addEventListener('click', closeGallery);
+
+      document.addEventListener('keydown', (e)=>{
+        if(lb.getAttribute('aria-hidden') === 'false'){
+          if(e.key === 'ArrowLeft') prev();
+          if(e.key === 'ArrowRight') next();
+          if(e.key === 'Escape') closeGallery();
+        }
+      });
+
+      // click handler on portfolio tile(s)
+      document.querySelectorAll('.portfolio-link').forEach(btn=>{
+        btn.addEventListener('click', function(e){
+          e.preventDefault();
+          const list = (this.dataset.images || '').split(',').map(s=>s.trim()).filter(Boolean);
+          // if no images provided, use some sensible defaults
+          const imgs = list.length ? list : ['portfolio1.jpg','portfolio2.jpg','portfolio3.jpg'];
+          openGallery(imgs, 0);
+        });
+      });
+    })();
+
+    // Make tiles and nav actionable: buttons use data-action or href anchors — log for now, can wire later
+    (function(){
+      // tiles
+      document.querySelectorAll('.tile').forEach(el=>{
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', ()=>{
+          const text = el.textContent.trim();
+          console.log('Tile clicked:', text);
+          const id = text.toLowerCase().split(/\s+/)[0];
+          const target = document.getElementById(id);
+          if(target){ target.scrollIntoView({behavior:'smooth'}); }
+        });
+      });
+
+      // Payment tile: open Stripe URL if provided in data-stripe-url
+      document.querySelectorAll('.payment-link').forEach(a=>{
+        a.addEventListener('click', function(e){
+          e.preventDefault();
+          const url = this.dataset.stripeUrl || '';
+          if(url){
+            // open Stripe Checkout or payment page in same tab
+            window.location.href = url;
+          } else {
+            console.log('Payment link clicked but no data-stripe-url set. Add a Stripe Checkout URL to data-stripe-url on this element.');
+            // Optional: open a placeholder or show a modal here
+            alert('Payment portal not configured yet.');
+          }
+        });
+      });
+
+      // header nav — allow anchors to be intercepted
+      document.querySelectorAll('.site-nav a').forEach(a=>{
+        a.addEventListener('click', function(e){
+          const href = this.getAttribute('href') || '';
+          if(href.startsWith('#')){
+            // prevent default and try to scroll
+            e.preventDefault();
+            const id = href.replace('#','');
+            const target = document.getElementById(id);
+            if(target){ target.scrollIntoView({behavior:'smooth'}); }
+            console.log('Nav clicked:', href);
+          } else {
+            console.log('External nav clicked:', href);
+          }
+        });
+      });
+    })();
+
+    // About modal: open on About tile click
+    (function(){
+      const aboutModal = document.querySelector('.about-modal');
+      if(!aboutModal) return;
+  const backdrop = aboutModal.querySelector('.about-backdrop');
+  const panel = aboutModal.querySelector('.about-panel');
+  const closeBtn = aboutModal.querySelector('.about-close');
+  const aboutOk = aboutModal.querySelector('.about-ok');
+
+      function openAbout(){
+        aboutModal.classList.remove('hidden');
+        aboutModal.classList.add('flex');
+        aboutModal.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+        // focus the close button for accessibility
+        if(closeBtn) closeBtn.focus();
+      }
+
+      function closeAbout(){
+        aboutModal.classList.remove('flex');
+        aboutModal.classList.add('hidden');
+        aboutModal.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+      }
+
+      // open when About tile clicked
+      const aboutTile = document.querySelector('.tile.bg-tile1');
+      if(aboutTile){
+        aboutTile.addEventListener('click', function(e){ e.preventDefault(); openAbout(); });
+      }
+
+      // close handlers
+      closeBtn && closeBtn.addEventListener('click', closeAbout);
+      aboutOk && aboutOk.addEventListener('click', closeAbout);
+      backdrop && backdrop.addEventListener('click', closeAbout);
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && aboutModal.getAttribute('aria-hidden') === 'false') closeAbout(); });
+    })();
+
+    // Contact verification modal: opens when header Contact Us is clicked
+    (function(){
+      const contactModal = document.querySelector('.contact-modal');
+      if(!contactModal) return;
+      const backdrop = contactModal.querySelector('.contact-backdrop');
+      const panel = contactModal.querySelector('.contact-panel');
+      const closeBtn = contactModal.querySelector('.contact-close');
+      const cancelBtn = contactModal.querySelector('.contact-cancel');
+      const form = contactModal.querySelector('.contact-form');
+      const questionEl = contactModal.querySelector('.contact-captcha-question');
+      const answerInput = contactModal.querySelector('.contact-captcha-input');
+
+      // create a simple math captcha
+      let expectedAnswer = null;
+      function makeCaptcha(){
+        const a = Math.floor(Math.random()*8) + 2; // 2..9
+        const b = Math.floor(Math.random()*8) + 2;
+        expectedAnswer = a + b;
+        if(questionEl) questionEl.textContent = `${a} + ${b} = ?`;
+        if(answerInput) answerInput.value = '';
+      }
+
+      function openContact(){
+        makeCaptcha();
+        contactModal.classList.remove('hidden');
+        contactModal.classList.add('flex');
+        contactModal.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+        // focus name input
+        const name = form.querySelector('input[name="name"]');
+        if(name) name.focus();
+      }
+
+      function closeContact(){
+        contactModal.classList.remove('flex');
+        contactModal.classList.add('hidden');
+        contactModal.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+      }
+
+      // wire the header Contact Us link (href="#contact")
+      const contactLink = document.querySelector('.site-nav a[href="#contact"]');
+      if(contactLink){
+        contactLink.addEventListener('click', function(e){ e.preventDefault(); openContact(); });
+      }
+
+      // handlers
+      closeBtn && closeBtn.addEventListener('click', closeContact);
+      cancelBtn && cancelBtn.addEventListener('click', closeContact);
+      backdrop && backdrop.addEventListener('click', closeContact);
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && contactModal.getAttribute('aria-hidden') === 'false') closeContact(); });
+
+      form && form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const val = (answerInput && answerInput.value || '').trim();
+        if(!val || Number(val) !== expectedAnswer){
+          alert('Captcha incorrect — please try again.');
+          makeCaptcha();
+          return;
+        }
+        // gather form data
+        const data = new FormData(form);
+        const payload = Object.fromEntries(data.entries());
+        console.log('Contact verification submitted:', payload);
+        // success — demo behavior: acknowledge and close
+        alert(`Verification passed — thank you, ${payload.name || 'guest'}!`);
+        closeContact();
+      });
+    })();
+
+    // Services modal: opens when Services Offered tile is clicked
+    (function(){
+      const servicesModal = document.querySelector('.services-modal');
+      if(!servicesModal) return;
+      const backdrop = servicesModal.querySelector('.services-backdrop');
+      const panel = servicesModal.querySelector('.services-panel');
+      const closeBtn = servicesModal.querySelector('.services-close');
+      const okBtn = servicesModal.querySelector('.services-ok');
+
+      function openServices(){
+        servicesModal.classList.remove('hidden');
+        servicesModal.classList.add('flex');
+        servicesModal.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+        if(closeBtn) closeBtn.focus();
+      }
+
+      function closeServices(){
+        servicesModal.classList.remove('flex');
+        servicesModal.classList.add('hidden');
+        servicesModal.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+      }
+
+      const servicesTile = document.querySelector('.tile.bg-tile2');
+      if(servicesTile){
+        servicesTile.addEventListener('click', function(e){ e.preventDefault(); openServices(); });
+      }
+
+      closeBtn && closeBtn.addEventListener('click', closeServices);
+      okBtn && okBtn.addEventListener('click', closeServices);
+      backdrop && backdrop.addEventListener('click', closeServices);
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && servicesModal.getAttribute('aria-hidden') === 'false') closeServices(); });
+    })();
+  </script>
+</body>
+</html>

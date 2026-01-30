@@ -1,0 +1,105 @@
+/* styles.css — now replaced by Tailwind utilities
+   Kept as an empty placeholder for any future non-Tailwind overrides. */
+
+/* Intentionally minimal: main layout and components are styled using Tailwind CDN in index.html */
+
+.frame{width:100%;max-width:1260px;border-radius:28px;box-shadow:0 18px 50px rgba(16,24,40,.18);overflow:hidden}
+.frame-inner{background:linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.98) 100%);padding:6px}
+.frame-content{background:var(--frame-bg);border-radius:22px;overflow:hidden}
+
+.container{max-width:var(--container);margin:0 auto;padding:0 24px}
+
+.site-header{background:transparent}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:26px 0}
+.brand{font-family: 'Comfortaa', 'Poppins', sans-serif;font-weight:700;color:#fff;text-decoration:none;font-size:1.35rem}
+
+.site-nav{display:flex;gap:18px;align-items:center}
+.site-nav a{color:rgba(255,255,255,0.95);text-decoration:none;font-weight:500;font-size:0.95rem;padding:8px}
+.site-nav a:hover{text-decoration:underline}
+.btn-outline{padding:8px 14px;border:2px solid rgba(255,255,255,0.9);border-radius:10px;color:#fff}
+
+.hero{position:relative}
+.hero-bg{position:absolute;inset:0;background-image:url('beach.jpg'), url('pageFormat.jpg');background-size:cover;background-position:center center;filter:saturate(.95);min-height:420px}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(6,38,66,0.85) 0%, rgba(6,38,66,0.6) 40%, rgba(6,38,66,0.4) 70%)}
+
+.hero-inner{position:relative;padding:72px 0 40px;display:flex;align-items:center;justify-content:center}
+
+/* Brand overlay centered above carousel */
+.brand-overlay{position:absolute;left:50%;top:28px;transform:translateX(-50%);z-index:30;color:#fff;font-family:'Comfortaa',sans-serif;font-weight:700;font-size:28px;letter-spacing:0.6px;text-shadow:0 6px 20px rgba(2,6,23,.45)}
+
+.center-caption{position:absolute;left:50%;transform:translateX(-50%);bottom:14px;background:rgba(0,0,0,0.45);color:#fff;padding:8px 12px;border-radius:8px;font-size:0.95rem;z-index:9;max-width:86%;text-align:center}
+
+.media-stack{position:relative;display:flex;align-items:center;justify-content:center;height:260px}
+.center-player{width:520px;height:260px;border-radius:12px;box-shadow:0 18px 40px rgba(2,6,23,.45);background:linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.12));display:flex;align-items:center;justify-content:center;z-index:5;position:relative;overflow:hidden}
+.center-player .carousel-center{width:100%;height:100%;object-fit:cover;display:block}
+.player-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+
+.thumb{position:relative;width:180px;height:120px;border-radius:10px;overflow:hidden;box-shadow:0 12px 30px rgba(2,6,23,.33);z-index:3}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.left-thumb{margin-right:24px}
+.right-thumb{margin-left:24px}
+
+.carousel-btn{background:transparent;border:0;color:rgba(255,255,255,0.95);font-size:36px;padding:6px 12px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.carousel-btn:focus{outline:2px solid rgba(255,255,255,0.12);border-radius:6px}
+
+.tiles{background:#fff;padding:18px 0}
+.tiles-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;max-width:var(--container);margin:0 auto}
+.tile{padding:36px 24px;text-align:center;font-weight:600;color:#1b1b1b;border-right:1px solid rgba(12,22,32,0.03)}
+.tile:nth-child(1){background:var(--tile-1)}
+.tile:nth-child(2){background:var(--tile-2)}
+.tile:nth-child(3){background:var(--tile-3)}
+.tile:nth-child(4){background:var(--tile-4);border-right:none}
+
+.site-footer{padding:16px 0;color:#666}
+.site-footer small{font-size:0.9rem}
+
+/* responsive */
+@media (max-width:1100px){
+  .center-player{width:420px;height:220px}
+  .left-thumb,.right-thumb{width:140px;height:96px}
+}
+@media (max-width:820px){
+  .site-nav a:not(.btn-outline){display:none}
+  .media-stack{height:220px}
+  .center-player{width:360px;height:200px}
+}
+@media (max-width:560px){
+  .frame{padding:0}
+  .tiles-row{grid-template-columns:1fr;gap:8px}
+  .tile{border-right:none}
+  .left-thumb,.right-thumb{display:none}
+  .center-player{width:100%;height:200px;border-radius:6px}
+  .brand{color:#fff}
+}
+
+/* small reset for image alt fallback */
+.hero-bg img{width:100%;display:block}
+
+/* Lightbox styles */
+.lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:1100}
+.lightbox[aria-hidden="false"]{display:flex}
+.lightbox-backdrop{position:absolute;inset:0;background:rgba(3,10,22,0.65)}
+.lightbox-panel{position:relative;z-index:1110;display:flex;align-items:center;gap:18px;padding:20px;max-width:92vw;max-height:92vh}
+.lightbox-content{flex:1;display:flex;align-items:center;justify-content:center;max-height:86vh}
+.lightbox-img{max-width:100%;max-height:86vh;object-fit:contain;border-radius:8px;box-shadow:0 18px 50px rgba(2,6,23,.5)}
+.lightbox-close{position:absolute;right:8px;top:8px;background:transparent;border:0;color:#fff;font-size:34px;cursor:pointer;z-index:1120}
+.lightbox-prev,.lightbox-next{background:transparent;border:0;color:#fff;font-size:42px;cursor:pointer;padding:8px 12px;border-radius:8px}
+.lightbox-prev:focus,.lightbox-next:focus,.lightbox-close:focus{outline:2px solid rgba(255,255,255,0.12)}
+
+.lightbox-caption{color:#fff;margin-top:8px;text-align:center;font-size:0.95rem}
+
+@media (max-width:720px){
+  .lightbox-panel{flex-direction:column;padding:12px}
+  .lightbox-prev,.lightbox-next{font-size:30px}
+}
+
+/* lightbox thumbnail strip */
+.lightbox-thumbs{display:flex;gap:10px;align-items:center;padding-top:12px;overflow-x:auto;max-width:86vw}
+.lightbox-thumbs::-webkit-scrollbar{height:8px}
+.lightbox-thumb{flex:0 0 auto;width:84px;height:56px;border-radius:6px;overflow:hidden;border:2px solid transparent;cursor:pointer}
+.lightbox-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.lightbox-thumb.active{border-color:var(--accent)}
+
+@media (max-width:720px){
+  .lightbox-thumb{width:72px;height:48px}
+}
