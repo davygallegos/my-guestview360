@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>GuestView 360 — Demo</title>
+  <title>GuestView 360</title>
   <meta name="description" content="GuestView 360 — sample landing page" />
   <link rel="icon" href="GV360.png" type="image/png">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +38,6 @@
             <nav class="site-nav">
               <a class="text-hero hover:underline px-2" href="#about">About Us</a>
               <a class="text-hero hover:underline px-2" href="#services">Services/FAQ</a>
-              <a class="text-hero hover:underline px-2" href="#payment">Payment Portal</a>
               <a class="text-hero hover:underline px-2" href="#portfolio">Portfolio</a>
               <a class="px-3 py-1 border border-hero rounded-md text-hero" href="#contact">Contact Us</a>
             </nav>
@@ -58,13 +57,15 @@
             </div>
             <!-- Full-bleed hero image filling the section -->
             <img src="pageFormat.jpg" alt="Hero" class="hero-fill absolute inset-0 w-full h-full object-cover" />
+            <!-- Virtual tour iframe, hidden by default -->
+            <iframe id="hero-tour-iframe" class="hidden absolute top-[5%] left-[5%] w-[90%] h-[90%]" frameborder="0" scrolling="no" allow="vr; xr; accelerometer; gyroscope; autoplay;" allowvr="yes" allowfullscreen webkitallowfullscreen mozallowfullscreen loading="eager"></iframe>
+            <button id="hero-tour-close" class="hidden absolute top-4 right-4 text-white text-3xl z-20 cursor-pointer">&times;</button>
           </section>
 
           <section class="tiles bg-white py-4">
-            <div class="tiles-row grid grid-cols-4 max-w-[1100px] mx-auto">
+            <div class="tiles-row grid grid-cols-3 max-w-[1100px] mx-auto">
               <div class="tile bg-tile1 p-9 text-center font-semibold text-gray-900 border-r">About Us</div>
               <div class="tile bg-tile2 p-9 text-center font-semibold text-gray-900 border-r">Services Offered</div>
-              <a href="#" class="tile bg-tile3 p-9 text-center font-semibold text-hero border-r payment-link" data-stripe-url="" title="Open payment portal">Payment Portal</a>
               <button type="button" class="tile bg-tile4 p-9 text-center font-semibold text-gray-900 portfolio-link" data-images="portfolio1.jpg,portfolio2.jpg,portfolio3.jpg" aria-label="Open portfolio gallery">Portfolio</button>
             </div>
           </section>
@@ -72,7 +73,7 @@
 
         <footer class="site-footer">
           <div class="container">
-            <small>&copy; <span id="year"></span> GuestView 360 — Demo</small>
+            <small>&copy; <span id="year"></span> GuestView 360</small>
           </div>
         </footer>
       </div>
@@ -81,10 +82,10 @@
     <!-- Lightbox modal (hidden by default) -->
     <div class="lightbox fixed inset-0 hidden items-center justify-center z-[1100]" aria-hidden="true" role="dialog" aria-modal="true">
       <div class="lightbox-backdrop absolute inset-0 bg-black/70" data-action="close"></div>
-      <div class="lightbox-panel relative z-10 flex items-center gap-4 p-5 max-w-[92vw] max-h-[92vh]">
+      <div class="lightbox-panel relative z-10 flex items-center gap-4 p-5 max-w-[98vw] max-h-[98vh] mx-auto">
   <button class="lightbox-close absolute right-2 top-2 text-hero text-3xl" aria-label="Close">&times;</button>
   <button class="lightbox-prev text-hero text-4xl px-3" aria-label="Previous">&#10094;</button>
-        <div class="lightbox-content flex-1 flex items-center justify-center max-h-[43vh]">
+        <div class="lightbox-content flex-1 flex items-center justify-center max-h-[95vh]">
           <img src="" alt="" class="lightbox-img max-w-full max-h-[43vh] object-contain rounded-lg shadow-2xl" />
           <div class="lightbox-caption text-hero mt-2 text-center" aria-hidden="true"></div>
         </div>
@@ -323,93 +324,57 @@
       render();
     })();
 
-    // Portfolio gallery: open lightbox with a list of images when Portfolio tile is clicked
+    // Portfolio gallery: open lightbox with Panoee virtual tour
     (function(){
       const lb = document.querySelector('.lightbox');
       if(!lb) return;
-      const lbImg = lb.querySelector('.lightbox-img');
-      const lbThumbs = lb.querySelector('.lightbox-thumbs');
+      const lbContent = lb.querySelector('.lightbox-content');
       const lbClose = lb.querySelector('.lightbox-close');
-      const lbPrev = lb.querySelector('.lightbox-prev');
-      const lbNext = lb.querySelector('.lightbox-next');
       const lbBackdrop = lb.querySelector('.lightbox-backdrop');
-      const lbCaption = lb.querySelector('.lightbox-caption');
 
-      let images = [];
-      let idx = 0;
-
-      function openGallery(imgs, start=0){
-        images = imgs && imgs.length ? imgs : ['pageFormat.jpg'];
-        idx = Math.max(0, Math.min(start, images.length-1));
-        populateThumbs();
-        update();
-        lb.setAttribute('aria-hidden','false');
-        lb.classList.remove('hidden'); lb.classList.add('flex');
-        document.body.style.overflow = 'hidden';
-        lbClose && lbClose.focus();
+      function openTour(){
+        // Hide hero image, show tour iframe and close button
+        document.querySelector('.hero-fill').classList.add('hidden');
+        const iframe = document.getElementById('hero-tour-iframe');
+        iframe.src = 'https://tour.panoee.net/Home2SuitesElPasoAirport';
+        iframe.classList.remove('hidden');
+        document.getElementById('hero-tour-close').classList.remove('hidden');
+        // Add device motion script
+        const script = document.createElement('script');
+        script.id = 'hero-tour-script';
+        script.textContent = 'var pano_iframe_name = "hero-tour-iframe"; window.addEventListener("devicemotion", function(e){ var iframe = document.getElementById(pano_iframe_name); if (iframe) iframe.contentWindow.postMessage({ type:"devicemotion", deviceMotionEvent:{ acceleration:{ x:e.acceleration.x, y:e.acceleration.y, z:e.acceleration.z }, accelerationIncludingGravity:{ x:e.accelerationIncludingGravity.x, y:e.accelerationIncludingGravity.y, z:e.accelerationIncludingGravity.z }, rotationRate:{ alpha:e.rotationRate.alpha, beta:e.rotationRate.beta, gamma:e.rotationRate.gamma }, interval:e.interval, timeStamp:e.timeStamp } }, "*"); });';
+        document.body.appendChild(script);
       }
 
-      function closeGallery(){
-        lb.setAttribute('aria-hidden','true');
-        lb.classList.remove('flex'); lb.classList.add('hidden');
-        document.body.style.overflow = '';
+      function closeTour(){
+        // Show hero image, hide tour
+        document.querySelector('.hero-fill').classList.remove('hidden');
+        document.getElementById('hero-tour-iframe').classList.add('hidden');
+        document.getElementById('hero-tour-close').classList.add('hidden');
+        // Remove script
+        const script = document.getElementById('hero-tour-script');
+        if(script) script.remove();
       }
 
-      function update(){
-        if(!lbImg) return;
-        lbImg.src = images[idx];
-        lbImg.loading = 'lazy';
-        lbImg.alt = 'Portfolio image ' + (idx+1);
-        if(lbCaption) lbCaption.textContent = '';
-        // highlight thumb
-        Array.from(lbThumbs.children).forEach((el,i)=>{
-          el.classList.toggle('ring-2', i === idx);
-        });
-      }
-
-      function prev(){ idx = (idx - 1 + images.length) % images.length; update(); }
-      function next(){ idx = (idx + 1) % images.length; update(); }
-
-      function populateThumbs(){
-        if(!lbThumbs) return;
-        lbThumbs.innerHTML = '';
-        images.forEach((src,i)=>{
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          // reduce portfolio thumbnails by ~50%
-          btn.className = 'flex-none w-8 h-5 rounded-md overflow-hidden border-2 border-transparent mr-2';
-          const im = document.createElement('img');
-          im.src = src; im.alt = 'Thumb '+(i+1); im.loading = 'lazy'; im.className='w-full h-full object-cover';
-          btn.appendChild(im);
-          btn.addEventListener('click', ()=>{ idx = i; update(); });
-          lbThumbs.appendChild(btn);
-        });
-      }
-
-      // wire controls
-      lbPrev && lbPrev.addEventListener('click', ()=>{ prev(); });
-      lbNext && lbNext.addEventListener('click', ()=>{ next(); });
-      lbClose && lbClose.addEventListener('click', closeGallery);
-      lbBackdrop && lbBackdrop.addEventListener('click', closeGallery);
-
+      // Wire controls
+      lbClose && lbClose.addEventListener('click', closeTour);
+      lbBackdrop && lbBackdrop.addEventListener('click', closeTour);
       document.addEventListener('keydown', (e)=>{
         if(lb.getAttribute('aria-hidden') === 'false'){
-          if(e.key === 'ArrowLeft') prev();
-          if(e.key === 'ArrowRight') next();
-          if(e.key === 'Escape') closeGallery();
+          if(e.key === 'Escape') closeTour();
         }
       });
 
-      // click handler on portfolio tile(s)
+      // Click handler on portfolio tile
       document.querySelectorAll('.portfolio-link').forEach(btn=>{
         btn.addEventListener('click', function(e){
           e.preventDefault();
-          const list = (this.dataset.images || '').split(',').map(s=>s.trim()).filter(Boolean);
-          // if no images provided, use some sensible defaults
-          const imgs = list.length ? list : ['portfolio1.jpg','portfolio2.jpg','portfolio3.jpg'];
-          openGallery(imgs, 0);
+          openTour();
         });
       });
+
+      // Close button for hero tour
+      document.getElementById('hero-tour-close').addEventListener('click', closeTour);
     })();
 
     // Make tiles and nav actionable: buttons use data-action or href anchors — log for now, can wire later
@@ -447,11 +412,67 @@
         a.addEventListener('click', function(e){
           const href = this.getAttribute('href') || '';
           if(href.startsWith('#')){
-            // prevent default and try to scroll
             e.preventDefault();
             const id = href.replace('#','');
-            const target = document.getElementById(id);
-            if(target){ target.scrollIntoView({behavior:'smooth'}); }
+            if(id === 'about'){
+              // Open about modal
+              const aboutModal = document.querySelector('.about-modal');
+              if(aboutModal){
+                aboutModal.classList.remove('hidden');
+                aboutModal.classList.add('flex');
+                aboutModal.setAttribute('aria-hidden','false');
+                document.body.style.overflow = 'hidden';
+                const closeBtn = aboutModal.querySelector('.about-close');
+                if(closeBtn) closeBtn.focus();
+              }
+            } else if(id === 'services'){
+              // Open services modal
+              const servicesModal = document.querySelector('.services-modal');
+              if(servicesModal){
+                servicesModal.classList.remove('hidden');
+                servicesModal.classList.add('flex');
+                servicesModal.setAttribute('aria-hidden','false');
+                document.body.style.overflow = 'hidden';
+                const closeBtn = servicesModal.querySelector('.services-close');
+                if(closeBtn) closeBtn.focus();
+              }
+            } else if(id === 'portfolio'){
+              // Open portfolio tour in hero
+              document.querySelector('.hero-fill').classList.add('hidden');
+              const iframe = document.getElementById('hero-tour-iframe');
+              iframe.src = 'https://tour.panoee.net/Home2SuitesElPasoAirport';
+              iframe.classList.remove('hidden');
+              document.getElementById('hero-tour-close').classList.remove('hidden');
+              const script = document.createElement('script');
+              script.id = 'hero-tour-script-nav';
+              script.textContent = 'var pano_iframe_name = "hero-tour-iframe"; window.addEventListener("devicemotion", function(e){ var iframe = document.getElementById(pano_iframe_name); if (iframe) iframe.contentWindow.postMessage({ type:"devicemotion", deviceMotionEvent:{ acceleration:{ x:e.acceleration.x, y:e.acceleration.y, z:e.acceleration.z }, accelerationIncludingGravity:{ x:e.accelerationIncludingGravity.x, y:e.accelerationIncludingGravity.y, z:e.accelerationIncludingGravity.z }, rotationRate:{ alpha:e.rotationRate.alpha, beta:e.rotationRate.beta, gamma:e.rotationRate.gamma }, interval:e.interval, timeStamp:e.timeStamp } }, "*"); });';
+              document.body.appendChild(script);
+            } else if(id === 'contact'){
+              // Open contact modal
+              const contactModal = document.querySelector('.contact-modal');
+              if(contactModal){
+                const questionEl = contactModal.querySelector('.contact-captcha-question');
+                const answerInput = contactModal.querySelector('.contact-captcha-input');
+                let expectedAnswer = null;
+                function makeCaptcha(){
+                  const a = Math.floor(Math.random()*8) + 2;
+                  const b = Math.floor(Math.random()*8) + 2;
+                  expectedAnswer = a + b;
+                  if(questionEl) questionEl.textContent = `${a} + ${b} = ?`;
+                  if(answerInput) answerInput.value = '';
+                }
+                makeCaptcha();
+                contactModal.classList.remove('hidden');
+                contactModal.classList.add('flex');
+                contactModal.setAttribute('aria-hidden','false');
+                document.body.style.overflow = 'hidden';
+                const nameInput = contactModal.querySelector('input[name="name"]');
+                if(nameInput) nameInput.focus();
+              }
+            } else {
+              const target = document.getElementById(id);
+              if(target){ target.scrollIntoView({behavior:'smooth'}); }
+            }
             console.log('Nav clicked:', href);
           } else {
             console.log('External nav clicked:', href);
