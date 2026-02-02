@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GuestView 360 — Demo</title>
   <meta name="description" content="GuestView 360 — sample landing page" />
-  <link rel="icon" href="GV360.jpg" type="image/jpeg">
+  <link rel="icon" href="GV360.png" type="image/png">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -562,8 +562,11 @@
         const data = new FormData(form);
         const payload = Object.fromEntries(data.entries());
         console.log('Contact verification submitted:', payload);
-        // success — demo behavior: acknowledge and close
-        alert(`Verification passed — thank you, ${payload.name || 'guest'}!`);
+        // success — send email inquiry
+        const subject = "Contact Inquiry from " + (payload.name || 'Guest');
+        const body = `Name: ${payload.name || ''}\nPhone: ${payload.phone || ''}\nEmail: ${payload.email || ''}`;
+        const mailto = `mailto:info@guestview360.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailto;
         closeContact();
       });
     })();
